@@ -1,67 +1,34 @@
-import React, { useEffect, useState } from "react";
-import {Chart as ChartJs, Tooltip, Title, ArcElement, Legend} from 'chart.js';
-import { Doughnut, Pie } from 'react-chartjs-2';
-import { useSelector } from "react-redux";
-
-ChartJs.register(
-  Tooltip, Title, ArcElement, Legend
-);
-
-const TransactionChart = ({category}) => {
- 
-  const [data,setData]=useState({
-    datasets: [{
-        data: [10, 20, 30],
-        backgroundColor:[
-          'red',
-          'blue',
-          'yellow'
-        ]
-    },
-  ],
-  labels: [
-      'Red',
-      'Yellow',
-      'Blue'
-  ], 
-});
-  
-  const randColor = () =>  {
-    return "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0').toUpperCase();
+import React from 'react';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer
+} from 'recharts';
+const data = [
+  { range: '0-100', min: 40, max: 80 },
+  { name: 'B', min: 30, max: 70 },
+  { name: 'C', min: 20, max: 60 },
+  { name: 'D', min: 50, max: 90 },
+  { name: 'E', min: 60, max: 100 }
+];
+const TransactionChart = () => {
+  return (
+    <ResponsiveContainer width="50%" height={400}>
+    <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="name" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      <Bar dataKey="max" fill="skyblue" />
+    </BarChart>
+  </ResponsiveContainer>
+  )
 }
-  
-  useEffect(()=>{
-    
-      const label = [];
-  const temp = [];
-  const bgcolor =[];
-      for(var i=0;i<category?.length;i++) {
-        label.push(category[i]._id);
-        temp.push(category[i].count)
-        bgcolor.push(randColor())
-    }
-    console.log(bgcolor);
-    setData(
-      {
-        datasets: [{
-            data:temp,
-            backgroundColor:bgcolor
-        },
-      ],
-      labels:label, 
-    }
-    )
-   
-  },[]);
-  
-  
 
-     return (
-          <div style={{width:'30%', height:'30%'}}>
-               <h1>TransactionChart</h1>
-               <Doughnut data={data}/>
-          </div>
-     );
-};
-
-export default TransactionChart;
+export default TransactionChart
